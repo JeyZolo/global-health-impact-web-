@@ -289,7 +289,7 @@
       google.charts.setOnLoadCallback(drawChart);
 
       function drawcharts(rownum) {
-       
+
 
         var bar1 = new google.visualization.DataTable();
             bar1.addColumn('string', 'Disease');
@@ -316,7 +316,7 @@
             top: 0,
             legend:'none',
             hAxis: {showTextEvery: 1, slantedText: true, slantedTextAngle: 45},
-            chartArea:{top:5,width:"300px",height:"400px"},
+            chartArea:{top:5,width:"450px",height:"400px"},
 
         };
 
@@ -333,23 +333,30 @@
 <div class="row">
     <div class="col-sm-6">
         <div class="contentbox">
-            <p class="redtxt">DISEASE: <b>ALL</b></p>
+            <p class="redtxt">DISEASE: <b style="text-transform:uppercase;">{{ speclocate.2 }}</b></p>
             <p class="txtcontent">The map you see displays the aggregate need for treatment of diseases for all diseases combined. These diseases include HIV/AIDS, TB, malaria, lymphatic filariasis, onchoriasis, schistomiasis, hookworm, ringworm, and whipworm. By clicking on a country on the map, you can view its specific need for treatment and the proportion of the disease burden due to each of these individual diseases in that country.</p>
         </div>
     </div>
     <div class="col-sm-6">
-        <div width="400px" id="mapdiv"></div>
+        <div class="contentbox">
+            <p class="blueheader text-left">Disability Adjusted Life Years<br /><b>Lost</b>  to <b>TB</b> </p>
+            <div width="400px" id="mapdiv"></div>
+        </div>
     </div>
 </div>
 
 <div class="row">
-    <div class="col-sm-4">
-        <p class="blueheader text-center">Treatment Coverage <br />by TB Type: </p>
-        <div class="verticalbar" id="verticalbar1"></div>
+    <div class="col-sm-6">
+        <div class="contentbox">
+            <p class="blueheader text-left">Treatment<b> Coverage</b> <br />by TB Type: </p>
+            <div class="verticalbar"  id="verticalbar1"></div>
+        </div>
     </div>
-    <div class="col-sm-4">
-        <p class="blueheader text-center">TB Treatment <br /> Effectiveness by Drug:</p>
-        <div class="verticalbar" id="verticalbar2"></div>
+    <div class="col-sm-6">
+        <div class="contentbox">
+            <p class="blueheader text-left">TB Treatment <br /><b> Effectiveness </b>by Drug:</p>
+            <div class="verticalbar" id="verticalbar2"></div>
+        </div>
     </div>
 </div>
 {% endif %}

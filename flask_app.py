@@ -190,12 +190,12 @@ def diseasepg(dyear,ddisease):
             piedat = []
             clickdat = []
             g.db = connect_db()
-            cur = g.db.execute(' select disease,distype,color,efficacy2010,coverage2010 from distypes where distype=? ',('TB',))
+            cur = g.db.execute(' select disease,distype,color,efficacy2010,coverage2010 ,position from distypes where distype=? order by position ASC ',('TB',))
             cur2 = g.db.execute(' select country, tb from diseaseall2010 ')
 
             data = cur.fetchall()
             data2 = cur2.fetchall()
-            barcolors = ['#FFB31C','#0083CA','#EF3E2E','#86AAB9','#003452','#CAEEFD','#546675','#8A5575','#305516']
+            barcolors = ['#FFD480','#CCCC00','#CCA300','#86AAB9','#003452','#CAEEFD','#546675','#8A5575','#305516']
             c = 0
             print(data)
             for row in data:
@@ -211,7 +211,7 @@ def diseasepg(dyear,ddisease):
                 bar2.append(xy)
                 print('=======')
                 print(efficacy2010)
-            
+
             for row in data2:
                 country = row[0]
                 tb = row[1]
@@ -227,8 +227,6 @@ def diseasepg(dyear,ddisease):
             piedat.insert(0,['Country','DALY'])
             upp = ddisease.upper()
             speclocate = [dyear, ddisease,upp]
-           
-
             return render_template('disease.html', navsub=4, showindex=1,piedat=piedat, clickdat=clickdat, index=index, bar1 = bar1, bar2 = bar2, disease=2, speclocate = speclocate, scrolling=1)
 
 

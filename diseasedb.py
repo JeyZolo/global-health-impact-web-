@@ -20,7 +20,7 @@ conn.execute('''CREATE TABLE disbars
             (disease text, color text, efficacy2010 real, efficacy2013 real, coverage2010 real, coverage2013 real, need2010 real, need2013 real)''')
 
 conn.execute('''CREATE TABLE distypes
-            (disease text,distype text, color text, efficacy2010 real, efficacy2013 real, coverage2010 real, coverage2013 real)''')
+            (disease text,distype text, color text, efficacy2010 real, efficacy2013 real, coverage2010 real, coverage2013 real,position real)''')
 
 
 datasrc = 'https://docs.google.com/spreadsheets/d/1IBfN_3f-dG65YbLWQbkXojUxs2PlQyo7l04Ubz9kLkU/pub?gid=1560508440&single=true&output=csv'
@@ -81,7 +81,10 @@ def stripdata2(x,y):
     if tmp=="#DIV/0!" or tmp=="nan":
         return(0)
     if isinstance(tmp,float) == False:
-        return(float(tmp.replace(',','').replace(' ','0').replace('%','')))
+        res = float(tmp.replace(',','').replace(' ','0').replace('%',''))
+        if res > 10000:
+            res = res * 0.00001
+        return (0.01*res)
     else:
         return(0)
 
@@ -113,9 +116,11 @@ for k in [94,96,98,99,100,102]:
     colors = ['#FFB31C', '#FFB31C', '#FFB31C', '#0083CA', '#0083CA', '#EF3E2E', '#003452', '#86AAB9', '#CAEEFD',
               '#546675', '#8A5575', '#305516']
     dismap =[2,3,1]
+    position = [2,0,1]
     disease = ['Normal-TB','MDR-TB','XDR-TB']
     disetype='TB'
     m = dismap[mark]
+    p = position[mark]
     color=colors[j%12]
     diseasename = disease[mark]
     efficacy2010 += stripdata2(k,1)
@@ -123,29 +128,34 @@ for k in [94,96,98,99,100,102]:
     coverage2010 += stripdata2(k,3)
     coverage2011 += stripdata2(k,5)
     print('==========efficacy2010=====')
-    print(df2.iloc[k,1])
-    print(efficacy2010)
     print(k)
+    #print(df2.iloc[k,0])
+    #print(df2.iloc[102,1])
+    print(df2.iloc[102,2])
+    #print(df2.iloc[k,3])
+    print(df2.iloc[k,5])
+    print(coverage2011)
+    print(efficacy2010)
 
 
     if i==m :
         efficacy2010 /= m
         efficacy2013 /= m
         coverage2010 /= m
-        coverage2011 /= m    
+        coverage2011 /= m
         i=0
         mark+=1
-        roww = [diseasename,disetype,color,efficacy2010,efficacy2013,coverage2010,coverage2011]
+        roww = [diseasename,disetype,color,efficacy2010,efficacy2013,coverage2010,coverage2011,p]
         distypes.append(roww)
-        conn.execute('insert into distypes values (?,?,?,?,?,?,?)', roww)
+        conn.execute('insert into distypes values (?,?,?,?,?,?,?,?)', roww)
         efficacy2010 = 0
         efficacy2013 = 0
         coverage2010 = 0
-        coverage2011 = 0    
+        coverage2011 = 0
 
     j+=1
     i+=1
-cur = conn.execute(' select disease,distype from distypes where distype=? ',('TB',))
+cur = conn.execute(' select * from distypes where distype=? ',('TB',))
 data = cur.fetchall()
 
 print(data)
