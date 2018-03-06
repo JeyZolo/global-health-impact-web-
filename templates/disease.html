@@ -316,9 +316,13 @@
             top: 0,
             legend:'none',
             hAxis: {showTextEvery: 1, slantedText: true, slantedTextAngle: 45},
+            vAxis: {format: 'percent'},
             chartArea:{top:5,width:"450px",height:"400px"},
 
         };
+        var formatter = new google.visualization.NumberFormat(
+         {negativeColor: 'red', negativeParens: true, pattern: '###.#%'});
+        formatter.format(bar1, 1);        formatter.format(bar2, 1);
 
         var vertbar1 = new google.visualization.ColumnChart(document.getElementById('verticalbar1'));
         var vertbar2 = new google.visualization.ColumnChart(document.getElementById('verticalbar2'));
